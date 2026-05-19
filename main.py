@@ -10,7 +10,7 @@ clock = pg.time.Clock()
 
 
 pacman = PacMan(3, 4)
-
+tid=0
 running = True
 while running:
     for event in pg.event.get():
@@ -18,6 +18,14 @@ while running:
             running = False
         elif event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
             running = False
+        elif event.type ==pg.KEYDOWN and event.key==pg.K_UP:
+            pacman.direction=[0,-1]
+        elif event.type ==pg.KEYDOWN and event.key==pg.K_DOWN:
+            pacman.direction=[0,1]
+        elif event.type ==pg.KEYDOWN and event.key==pg.K_LEFT:
+            pacman.direction=[-1,0]
+        elif event.type ==pg.KEYDOWN and event.key==pg.K_RIGHT:
+            pacman.direction=[1,0]
 
     # Tegn bakgrunn: (En slags "reset" av hele vinduet vårt)
     vindu.fill(BLACK)
@@ -29,11 +37,14 @@ while running:
 
 
     # Tegn objektene våre:
+    if tid%20==0:
+        pacman.oppdater(board)
     pacman.draw(vindu)
 
 
     # Har alltid disse med til slutt:
     pg.display.flip()
+    tid=tid+1
     clock.tick(FPS)
 
 
