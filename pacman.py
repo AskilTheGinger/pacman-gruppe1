@@ -1,6 +1,7 @@
 from pathlib import Path
 import pygame as pg
 from constants import *
+from board import Board
 
 class PacMan:
     IMAGE_FILE = Path(__file__).parent / "sprites" / "pacman2.png"
@@ -21,7 +22,7 @@ class PacMan:
     def __init__(self, row, col):
         self.row = row
         self.col = col
-
+        self.direction:list=[0,0]
         self.frames_idle = self.getImageSpriteList(0, 0, 4)
         # Bildet vi skal vise til å starte med er idle:
         self.frames = self.frames_idle
@@ -31,7 +32,10 @@ class PacMan:
         # Om vi vil speile bildet:
         self.venstre = False
 
-
+    def oppdater(self,board:Board):
+        if board.is_road(self.col+self.direction[0], self.row+self.direction[1]):
+            self.row+=self.direction[1]
+            self.col+=self.direction[0]
 
     def draw(self, surface):
 
