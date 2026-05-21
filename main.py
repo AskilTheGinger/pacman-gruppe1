@@ -37,8 +37,7 @@ while running:
 
 
     # Tegn objektene våre:
-    if tid%20==0:
-        pacman.oppdater(board)
+    pacman.oppdater(board)
     pacman.draw(vindu)
 
 

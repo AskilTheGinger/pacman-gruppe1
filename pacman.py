@@ -21,6 +21,7 @@ class PacMan:
 
     def __init__(self, row, col):
         self.row = row
+        self.offset:list=[0,0]
         self.col = col
         self.direction:list=[0,0]
         self.temp_dir=self.direction
@@ -34,11 +35,20 @@ class PacMan:
         self.venstre = False
 
     def oppdater(self,board:Board):
+    
         if board.is_road(self.col+self.direction[0], self.row+self.direction[1]):
-            self.temp_dir=self.direction
+            if self.offset==[0,0]:
+                self.temp_dir=self.direction
+            if self.direction[0]== -1*self.temp_dir[0] or self.direction[1]== -1*self.temp_dir[1]:
+                self.temp_dir=self.direction
         if board.is_road(self.col+self.temp_dir[0], self.row+self.temp_dir[1]):
-            self.col+=self.temp_dir[0]
-            self.row+=self.temp_dir[1]
+            self.offset[0]+=self.temp_dir[0] * 4
+            self.offset[1]+=self.temp_dir[1] * 4
+            
+            if abs(self.offset[1])==32 or abs(self.offset[0])==32:
+                self.offset=[0,0]
+                self.row+=self.temp_dir[1]
+                self.col+=self.temp_dir[0]
 
     def draw(self, surface):
 
@@ -52,7 +62,7 @@ class PacMan:
         # Sørg for at vi tegner midt i "Tile":
         mid = TILE_SIZE // 2
         rect = current_frame_image.get_rect()
-        rect.center = (self.col * TILE_SIZE + mid , self.row * TILE_SIZE + mid)
+        rect.center = (self.col * TILE_SIZE + mid +self.offset[0], self.row * TILE_SIZE + mid+self.offset[1])
 
         # Blit images på skjermen (der self.rect befinner seg):
         surface.blit(current_frame_image, rect)
