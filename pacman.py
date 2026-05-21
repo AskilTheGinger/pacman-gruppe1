@@ -23,6 +23,7 @@ class PacMan:
         self.row = row
         self.col = col
         self.direction:list=[0,0]
+        self.temp_dir=self.direction
         self.frames_idle = self.getImageSpriteList(0, 0, 4)
         # Bildet vi skal vise til å starte med er idle:
         self.frames = self.frames_idle
@@ -34,8 +35,10 @@ class PacMan:
 
     def oppdater(self,board:Board):
         if board.is_road(self.col+self.direction[0], self.row+self.direction[1]):
-            self.row+=self.direction[1]
-            self.col+=self.direction[0]
+            self.temp_dir=self.direction
+        if board.is_road(self.col+self.temp_dir[0], self.row+self.temp_dir[1]):
+            self.col+=self.temp_dir[0]
+            self.row+=self.temp_dir[1]
 
     def draw(self, surface):
 
